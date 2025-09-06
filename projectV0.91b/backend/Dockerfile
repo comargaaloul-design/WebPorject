@@ -1,9 +1,10 @@
-FROM node:18-alpine
+FROM node:18-bullseye-slim
 
 WORKDIR /app
 
-# Add curl for healthcheck
-RUN apk add --no-cache curl
+# Add curl for healthcheck and update certificates
+RUN apt-get update && apt-get install -y curl ca-certificates && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
 RUN npm install --production --no-audit --no-fund
 
