@@ -1,7 +1,7 @@
 const Server = require('../models/Server');
 const ping = require('ping');
-const net = require('net');
 const logger = require('../utils/logger');
+const net = require('net');
 
 class MonitoringService {
   constructor(io) {
@@ -110,7 +110,7 @@ class MonitoringService {
     return new Promise((resolve) => {
       const socket = new net.Socket();
       
-      socket.setTimeout(5000);
+      socket.setTimeout(10000); // Increased timeout
       
       socket.on('connect', () => {
         socket.destroy();
@@ -126,7 +126,11 @@ class MonitoringService {
         resolve(false);
       });
       
-      socket.connect(port, host);
+      try {
+        socket.connect(port, host);
+      } catch (error) {
+        resolve(false);
+      }
     });
   }
 

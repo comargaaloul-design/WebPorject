@@ -3,7 +3,13 @@ FROM node:18-bullseye-slim
 WORKDIR /app
 
 # Add curl for healthcheck and update certificates
-RUN apt-get update && apt-get install -y curl ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    curl \
+    ca-certificates \
+    python3 \
+    python3-pip \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
 RUN npm install --production --no-audit --no-fund
